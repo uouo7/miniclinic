@@ -48,6 +48,27 @@ cd miniclinic
 - 3 位虛構病患（TEST00001, TEST00002, TEST00003）
 - 3 筆示範掛號
 
+## Render 部署設定
+
+如果要把這個專案部署到 Render，建議把敏感的資料庫資訊放在 Render 的 Environment Variables，而不是直接寫死在程式碼中。
+
+1. 進入 Render Dashboard，選擇你的 Web Service。
+2. 開啟 Environment 頁面，加入以下變數：
+   - `SPRING_DATASOURCE_URL`：你的資料庫連線字串
+   - `SPRING_DATASOURCE_USERNAME`：你的資料庫帳號
+   - `SPRING_DATASOURCE_PASSWORD`：你的資料庫密碼
+   - `SPRING_PROFILES_ACTIVE=prod`
+3. 若使用 PostgreSQL，請確認 `application-prod.properties` 內有對應的設定，例如：
+
+```properties
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+```
+
+如果沒有外部資料庫，則需要另外補上 H2 等測試資料庫依賴；正式環境仍建議使用真實資料庫。
+
 ## 專案結構
 
 ```
